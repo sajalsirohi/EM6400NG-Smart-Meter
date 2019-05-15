@@ -21,12 +21,12 @@ def write_csv_header(csv_file, header):
         f.write(header)
 params_recorded =  "Current Phase 1 (A1),Current Phase 2 (A2), Current Phase 3 (A3), Current Average(A),Avg. Line to Neutral Voltage(VLN),Active Power Phase 1 (W1), Active Power Phase 2 (W2), Active Power Phase 3 (W3),Total Active Power(W),Reactive Power Phase 1 (VAR1), Reactive Power Phase 2 (VAR2), Reactive Power Phase 3 (VAR3), Total Reactive Power(VAR), Apparent Power Phase 1 (VA1), Apparent Power Phase 2 (VA2),Apparent Power Phase 3 (VA3), Total Apparent Power(VA), Frquency (F), Total Power Factor(PF)"
 
-DATA_PATH = r"C:\Users\Sajal Sirohi.DESKTOP-RTVGPUA\Desktop\meter_NG6400"
+DATA_PATH = "/home/pi/smart_meter"
 no_of_meters = 4
 meter_id = 1
 
 try:
-    client = ModbusClient(method="rtu", port="COM5", stopbits=1, bytesize=8, parity='E', baudrate=19200)
+    client = ModbusClient(method="rtu", port="/dev/ttyUSB0", stopbits=1, bytesize=8, parity='E', baudrate=19200)
     connection = client.connect()
 except:
     print("Unable to connect to the Com Port, Please try Again \n")
@@ -84,13 +84,10 @@ while True:
         for x in data_convert:
             data +=x + ','
         data = data+"\n"
-             
-
+            
         csv_file_path = os.path.join(DATA_PATH, "meter_id_" + str(meter_id) + ".csv")
         write_csv(csv_file_path, data)
-        print ("Size : " + str(len(answer)))
-        print (answer)
-        print (data_convert)
+        print ("Size : " + str(len(data_convert)))
         meter_id+=1
     except:
         print("Error Reading from the Meter ID : " + str(meter_id))
