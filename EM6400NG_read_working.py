@@ -1,5 +1,5 @@
 import pymodbus
-import serial
+from serial import Serial
 from pymodbus.pdu import ModbusRequest
 from pymodbus.client.sync import ModbusSerialClient as ModbusClient
 from pymodbus.transaction import ModbusRtuFramer
